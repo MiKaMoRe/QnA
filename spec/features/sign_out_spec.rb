@@ -5,7 +5,7 @@ feature 'User can sign out', %q{
   I'd like to be able to sign out
 } do
   scenario 'Logged in user tries to log out' do
-    user = User.create!(email: 'user@test.com', password: '12345678')
+    user = create(:user)
 
     visit new_user_session_path
     fill_in 'Email', with: user.email

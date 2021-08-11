@@ -16,11 +16,11 @@ feature 'User can sign up', %q{
   end
 
   scenario 'Already registered user tries to sign up' do
-    User.create!(email: 'user@test.com', password: '12345678')
+    user = create(:user)
 
-    fill_in 'Email', with: 'user@test.com'
-    fill_in 'Password', with: '12345678'
-    fill_in 'Password confirmation', with: '12345678'
+    fill_in 'Email', with: user.email
+    fill_in 'Password', with: user.password
+    fill_in 'Password confirmation', with: user.password_confirmation
     click_on 'Sign up'
 
     expect(page).to have_content 'Email has already been taken'
