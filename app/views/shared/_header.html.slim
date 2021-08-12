@@ -6,5 +6,5 @@ header
     div class='profile'
       - if user_signed_in?
         p Welcome, 
-          b = current_user.nickname
+        b = current_user.email
         = link_to 'Log out', destroy_user_session_path, method: :delete
