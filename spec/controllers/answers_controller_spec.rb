@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   describe 'POST #create' do
-    let(:question) { create(:question) }
     let(:user) { create(:user) }
+    let(:question) { create(:question, author: user) }
 
     before { login(user) }
 

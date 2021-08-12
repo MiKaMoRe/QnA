@@ -6,7 +6,7 @@ feature 'User can answer the question', %q{
   I'd like to be able answer the question
 } do
   given(:user) { create(:user) }
-  given(:question) { create(:question) }
+  given(:question) { create(:question, author: user) }
   
   describe 'Autheticated user' do
     background do

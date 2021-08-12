@@ -5,8 +5,8 @@ feature 'User can remove the answer', %q{
   As an autheticated user
   I'd like to be able remove the answer
 } do
-  given(:question) { create(:question) }
   given(:user) { create(:user) }
+  given(:question) { create(:question, author: user) }
 
   background do
     create(:answer, question: question, author: user)
