@@ -1,4 +1,5 @@
-div
-  p= answer.title
-  p= answer.body
-  = link_to 'Delete', answer_path(answer), method: :delete
+-unless answer.id.nil?
+  div
+    p= answer.title
+    p= answer.body
+    = link_to 'Delete', answer_path(answer), method: :delete

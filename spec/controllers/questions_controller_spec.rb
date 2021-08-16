@@ -1,44 +1,85 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
+  let(:post_create) { post :create, params: { question: question_params } }
   let(:user) { create(:user) }
 
-  before { login(user) }
+  describe 'Authenticated user' do
+    before { login(user) }
 
-  describe 'POST #create' do
-    context 'with valid attributes' do
-      it 'saves a new question in the database' do
-        expect { post :create, params: { question: attributes_for(:question), author: user } }.to change(Question, :count).by(1)
-      end
-
-      it 'redirect to show view' do
-        post :create, params: { question: attributes_for(:question), author: user  }
-        expect(response).to redirect_to assigns(:question)
+    describe 'GET #show' do
+      it 'render show temlate' do
+        expect(response).to render_template :show
       end
     end
 
-    context 'with invalid attributes' do 
-      it 'does not save the question' do
-        expect { post :create, params: { question: attributes_for(:question, :invalid), author: user  } }.to_not change(Question, :count)
+    describe 'POST #create' do
+      context 'with valid attributes' do
+        let(:question_params) { attributes_for(:question) }
+
+        it 'saves a new question in the database' do
+          expect { post_create }.to change(Question, :count).by(1)
+        end
+  
+        it 'redirect to show view' do
+          post_create
+          expect(response).to redirect_to assigns(:question)
+        end
       end
-      
-      it 're-render new view' do
-        post :create, params: { question: attributes_for(:question, :invalid), author: user  }
-        expect(response).to render_template :new
+  
+      context 'with invalid attributes' do 
+        let(:question_params) { attributes_for(:question, :invalid) }
+
+        it 'does not save the question' do
+          expect { post_create }.to_not change(Question, :count)
+        end
+        
+        it 're-render new view' do
+          post_create
+          expect(response).to render_template :new
+        end
+      end
+    end
+
+    describe 'DELETE #destroy' do
+      let!(:question) { create(:question, author: user )}
+  
+      it 'deletes the question' do
+        expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
+      end
+  
+      it 'redirects to index' do
+        delete :destroy, params: { id: question }
+        expect(response).to redirect_to root_path
       end
     end
   end
+  
+  describe 'Unauthenticated user' do
+    describe 'POST #create' do
+      let(:question_params) { attributes_for(:question) }
 
-  describe 'DELETE #destroy' do
-    let!(:question) { create(:question, author: user )}
+      it 'saves a new question in the database' do
+        expect { post_create }.to_not change(Question, :count)
+      end
 
-    it 'deletes the question' do
-      expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
+      it 'redirect to sign in' do
+        post_create
+        expect(response).to redirect_to new_user_session_path
+      end
     end
 
-    it 'redirects to index' do
-      delete :destroy, params: { id: question }
-      expect(response).to redirect_to root_path
+    describe 'DELETE #destroy' do
+      let!(:question) { create(:question, author: user) }
+      
+      it 'deletes the question' do
+        expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
+      end
+  
+      it 'redirects to index' do
+        delete :destroy, params: { id: question }
+        expect(response).to redirect_to new_user_session_path
+      end
     end
   end
 end

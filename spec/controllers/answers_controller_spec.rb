@@ -1,45 +1,80 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
+  let(:post_create) {  post :create, params: { answer: answer_params, question_id: question.id } }
   let(:user) { create(:user) }
   let(:question) { create(:question, author: user) }
+
+  describe 'Authenticated user' do
+    before { login(user) }
+
+    describe 'POST #create' do
+      context 'with valid attributes' do
+        let(:answer_params) { attributes_for(:answer) }
+
+        it 'saves a new answer in database' do
+          expect { post_create }.to change(Answer, :count).by(1)
+        end
   
-  before { login(user) }
-
-  describe 'POST #create' do
-    context 'with valid attributes' do
-      it 'saves a new answer in database' do
-        expect { post :create, params: { answer: attributes_for(:answer), question_id: question.id, author_id: user.id  } }.to change(Answer, :count).by(1)
+        it 'redirect to show view' do
+          post_create
+          expect(response).to redirect_to assigns(:question)
+        end
       end
+  
+      context 'with invalid attributes' do
+        let(:answer_params) { attributes_for(:answer, :invalid) }
 
-      it 'redirect to show view' do
-        post :create, params: { answer: attributes_for(:answer), question_id: question.id }
-        expect(response).to redirect_to assigns(:question)
+        it 'does not save the answer' do
+          expect { post_create }.to_not change(Answer, :count)
+        end
+  
+        it 're-render new view' do
+          post_create
+          expect(response).to render_template 'questions/show'
+        end
       end
     end
-
-    context 'with invalid attributes' do
-      it 'does not save the answer' do
-        expect { post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question.id } }.to_not change(Answer, :count)
+  
+    describe 'DELETE #destroy' do
+      let!(:answer) { create(:answer, question: question, author: user )}
+  
+      it 'deletes the answer' do
+        expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
       end
-
-      it 're-render new view' do
-        post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question.id }
-        expect(response).to render_template 'questions/show'
+  
+      it 'redirects to index' do
+        delete :destroy, params: { id: answer }
+        expect(response).to redirect_to question_path(answer.question)
       end
     end
   end
 
-  describe 'DELETE #destroy' do
-    let!(:answer) { create(:answer, question: question, author: user )}
+  describe 'Unauthenticated user' do
+    context 'POST #create' do
+      let(:answer_params) { attributes_for(:answer) }
 
-    it 'deletes the answer' do
-      expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
+      it 'not saves a new answer in database' do
+        expect { post_create }.to change(Answer, :count).by(0)
+      end
+
+      it 'redirect to sign in' do
+        post_create
+        expect(response).to redirect_to new_user_session_path
+      end
     end
-
-    it 'redirects to index' do
-      delete :destroy, params: { id: answer }
-      expect(response).to redirect_to question_path(answer.question)
+  
+    describe 'DELETE #destroy' do
+      let!(:answer) { create(:answer, question: question, author: user )}
+  
+      it 'not deletes the answer' do
+        expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(0)
+      end
+  
+      it 'redirects to sign in' do
+        delete :destroy, params: { id: answer }
+        expect(response).to redirect_to new_user_session_path
+      end
     end
   end
 end
