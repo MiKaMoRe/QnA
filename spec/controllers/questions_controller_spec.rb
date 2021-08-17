@@ -7,12 +7,6 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'Authenticated user' do
     before { login(user) }
 
-    describe 'GET #show' do
-      it 'render show temlate' do
-        expect(response).to render_template :show
-      end
-    end
-
     describe 'POST #create' do
       context 'with valid attributes' do
         let(:question_params) { attributes_for(:question) }

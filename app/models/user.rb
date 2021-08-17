@@ -6,4 +6,8 @@ class User < ApplicationRecord
 
   has_many :created_answers, foreign_key: 'author_id', class_name: 'Answer', dependent: :destroy
   has_many :created_questions, foreign_key: 'author_id', class_name: 'Question', dependent: :destroy
+
+  def author_of?(resource)
+    resource.author.id == id
+  end
 end
