@@ -1,11 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  let(:post_create) {  post :create, params: { answer: answer_params, question_id: question.id } }
   let(:user) { create(:user) }
   let(:question) { create(:question, author: user) }
 
   describe 'POST #create' do
+    let(:post_create) {  post :create, params: { answer: answer_params, question_id: question.id } }
+
     context 'Authenticated user' do
       before { login(user) }
 
@@ -51,17 +52,19 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
+    let(:delete_destroy) {  delete :destroy, params: { id: answer } }
+
     context 'Authenticated user' do
       let!(:answer) { create(:answer, question: question, author: user )}
 
       before { login(user) }
 
       it 'deletes the answer' do
-        expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
+        expect { delete_destroy }.to change(Answer, :count).by(-1)
       end
 
       it 'redirects to index' do
-        delete :destroy, params: { id: answer }
+        delete_destroy
         expect(response).to redirect_to question_path(answer.question)
       end
     end
@@ -70,11 +73,11 @@ RSpec.describe AnswersController, type: :controller do
       let!(:answer) { create(:answer, question: question, author: user )}
   
       it 'not deletes the answer' do
-        expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(0)
+        expect { delete_destroy }.to change(Answer, :count).by(0)
       end
   
       it 'redirects to sign in' do
-        delete :destroy, params: { id: answer }
+        delete_destroy
         expect(response).to redirect_to new_user_session_path
       end
     end

@@ -1,10 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  let(:post_create) { post :create, params: { question: question_params } }
   let(:user) { create(:user) }
 
   describe 'POST #create' do
+    let(:post_create) { post :create, params: { question: question_params } }
+
     context 'Authenticated user' do
       before { login(user) }
 
