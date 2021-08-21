@@ -1,5 +1,7 @@
--unless answer.id.nil?
+- if answer.persisted?
   div
     p= answer.title
     p= answer.body
-    = link_to 'Delete', answer_path(answer), method: :delete
+    - unless current_user.nil?
+      - if current_user.author_of?(answer)
+        = link_to 'Delete', answer_path(answer), method: :delete
