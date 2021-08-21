@@ -43,7 +43,7 @@ RSpec.describe AnswersController, type: :controller do
       let(:answer_params) { attributes_for(:answer) }
 
       it 'not saves a new answer in database' do
-        expect { post_create }.to change(Answer, :count).by(0)
+        expect { post_create }.not_to change(Answer, :count)
       end
 
       it 'redirect to sign in' do
