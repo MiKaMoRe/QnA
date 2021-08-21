@@ -8,7 +8,7 @@ feature 'User can sign up', "
 " do
   background { visit new_user_registration_path }
 
-  scenario 'Unregistered user tries to sign up' do
+  scenario 'unregistered user tries to sign up' do
     fill_in 'Email', with: 'user@test.com'
     fill_in 'Password', with: '12345678'
     fill_in 'Password confirmation', with: '12345678'
@@ -17,7 +17,7 @@ feature 'User can sign up', "
     expect(page).to have_content 'Welcome! You have signed up successfully.'
   end
 
-  scenario 'Already registered user tries to sign up' do
+  scenario 'already registered user tries to sign up' do
     user = create(:user)
 
     fill_in 'Email', with: user.email

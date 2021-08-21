@@ -9,7 +9,7 @@ feature 'User can browse a questions', "
 " do
   let!(:question) { create(:question) }
 
-  scenario 'User open questions list' do
+  scenario 'user open questions list' do
     visit root_path
 
     expect(page).to have_content question.title

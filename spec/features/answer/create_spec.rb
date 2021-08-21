@@ -17,7 +17,7 @@ feature 'User can answer the question', "
       visit question_path(question)
     end
 
-    scenario 'Answer the question' do
+    scenario 'answer the question' do
       fill_in 'Title', with: 'Test answer'
       fill_in 'Body', with: 'test test test'
       click_on 'Answer'
@@ -27,13 +27,13 @@ feature 'User can answer the question', "
       expect(page).to have_content 'test test test'
     end
 
-    scenario 'Answer the question with errors' do
+    scenario 'answer the question with errors' do
       click_on 'Answer'
       expect(page).to have_content "Title can't be blank"
     end
   end
 
-  scenario 'Unautheticated user tries to answer the question' do
+  scenario 'unautheticated user tries to answer the question' do
     visit question_path(question)
     fill_in 'Title', with: 'Test answer'
     fill_in 'Body', with: 'test test test'

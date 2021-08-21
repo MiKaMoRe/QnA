@@ -15,7 +15,7 @@ feature 'User can remove the answer', "
     visit question_path(question)
   end
 
-  scenario 'Author tries to delete answer' do
+  scenario 'author tries to delete answer' do
     sign_in(user)
     visit question_path(question)
 
@@ -29,18 +29,14 @@ feature 'User can remove the answer', "
     expect(page).to have_content 'Answer successfully deleted'
   end
 
-  scenario 'Not a author tries to delete answer' do
+  scenario 'not a author tries to delete answer' do
     sign_in(create(:user))
     visit question_path(question)
-    click_on 'Delete'
 
-    expect(page).to have_content 'You are not a author!'
+    expect(page).not_to have_content 'Delete'
   end
 
-  scenario 'Unauthenticated user tries to delete answer' do
-    click_on 'Delete'
-
-    expect(page).to have_content 'Log in'
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+  scenario 'unauthenticated user tries to delete answer' do
+    expect(page).not_to have_content 'Delete'
   end
 end

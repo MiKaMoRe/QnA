@@ -20,7 +20,7 @@ feature 'User can sign out', "
     expect(page).to have_content 'Signed out successfully.'
   end
 
-  scenario 'Logged out user tries to log out' do
+  scenario 'logged out user tries to log out' do
     visit root_path
 
     expect(page).to_not have_content 'Log out'
