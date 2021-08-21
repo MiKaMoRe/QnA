@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'User can remove the question', %q{
+feature 'User can remove the question', "
   In order to cancel question
   As an autheticated user
   I'd like to be able remove the question
-} do
+" do
   given(:user) { create(:user) }
 
   background do
@@ -12,7 +14,7 @@ feature 'User can remove the question', %q{
     visit root_path
   end
 
-  scenario 'Author tries to delete question' do
+  scenario 'author tries to delete question' do
     sign_in(user)
 
     expect(page).to have_content 'MyQuestion'

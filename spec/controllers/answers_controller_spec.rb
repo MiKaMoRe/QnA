@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
@@ -5,9 +7,9 @@ RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question, author: user) }
 
   describe 'POST #create' do
-    let(:post_create) {  post :create, params: { answer: answer_params, question_id: question.id } }
+    let(:post_create) { post :create, params: { answer: answer_params, question_id: question.id } }
 
-    context 'Authenticated user' do
+    context 'when authenticated user' do
       before { login(user) }
 
       context 'with valid attributes' do
@@ -27,7 +29,7 @@ RSpec.describe AnswersController, type: :controller do
         let(:answer_params) { attributes_for(:answer, :invalid) }
 
         it 'does not save the answer' do
-          expect { post_create }.to_not change(Answer, :count)
+          expect { post_create }.not_to change(Answer, :count)
         end
 
         it 're-render new view' do
@@ -37,7 +39,7 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
 
-    context 'Unauthenticated user' do
+    context 'when unauthenticated user' do
       let(:answer_params) { attributes_for(:answer) }
 
       it 'not saves a new answer in database' do
@@ -52,10 +54,10 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    let(:delete_destroy) {  delete :destroy, params: { id: answer } }
+    let(:delete_destroy) { delete :destroy, params: { id: answer } }
 
-    context 'Authenticated user' do
-      let!(:answer) { create(:answer, question: question, author: user )}
+    context 'when authenticated user' do
+      let!(:answer) { create(:answer, question: question, author: user) }
 
       before { login(user) }
 
@@ -69,13 +71,13 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
 
-    context 'Unauthenticated user' do
-      let!(:answer) { create(:answer, question: question, author: user )}
-  
+    context 'when unauthenticated user' do
+      let!(:answer) { create(:answer, question: question, author: user) }
+
       it 'not deletes the answer' do
         expect { delete_destroy }.to change(Answer, :count).by(0)
       end
-  
+
       it 'redirects to sign in' do
         delete_destroy
         expect(response).to redirect_to new_user_session_path

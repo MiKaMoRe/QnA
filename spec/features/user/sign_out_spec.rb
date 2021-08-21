@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'User can sign out', %q{
+feature 'User can sign out', "
   In order to don't save the session
   I'd like to be able to sign out
-} do
+" do
   scenario 'Logged in user tries to log out' do
     user = create(:user)
 
@@ -14,7 +16,7 @@ feature 'User can sign out', %q{
 
     visit root_path
     click_on 'Log out'
-    
+
     expect(page).to have_content 'Signed out successfully.'
   end
 

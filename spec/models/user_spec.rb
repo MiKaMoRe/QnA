@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  it { should have_many(:created_answers).dependent(:destroy) }
-  it { should have_many(:created_questions).dependent(:destroy) }
+  it { is_expected.to have_many(:created_answers).dependent(:destroy) }
+  it { is_expected.to have_many(:created_questions).dependent(:destroy) }
 
   describe '#author_of?' do
     subject(:user) { create(:user) }
@@ -16,7 +18,7 @@ RSpec.describe User, type: :model do
     context 'when user is not the author' do
       let(:resource) { create(:question) }
 
-      it { is_expected.to_not be_author_of(resource) }
+      it { is_expected.not_to be_author_of(resource) }
     end
   end
 end

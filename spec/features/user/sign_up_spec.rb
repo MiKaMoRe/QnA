@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'User can sign up', %q{
+feature 'User can sign up', "
   In order to log in
   I'd like to be able to sign up
-} do
+" do
   background { visit new_user_registration_path }
 
   scenario 'Unregistered user tries to sign up' do
@@ -26,5 +28,3 @@ feature 'User can sign up', %q{
     expect(page).to have_content 'Email has already been taken'
   end
 end
-
-  

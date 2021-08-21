@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'User can remove the answer', %q{
+feature 'User can remove the answer', "
   In order to cancel answer
   As an autheticated user
   I'd like to be able remove the answer
-} do
+" do
   given(:user) { create(:user) }
   given(:question) { create(:question, author: user) }
 

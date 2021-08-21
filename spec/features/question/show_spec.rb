@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'User can open the question', %q{
+feature 'User can open the question', "
   In order to find answer
   As an unautheticated user
   I'd like to be able open the question
-} do
+" do
   let!(:answer) { create(:answer) }
-  
+
   scenario 'User open questions list' do
     visit question_path(answer.question)
 
