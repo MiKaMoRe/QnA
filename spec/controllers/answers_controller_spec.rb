@@ -3,10 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  let(:user) { create(:user) }
-  let(:question) { create(:question, author: user) }
-
   describe 'POST #create' do
+    let(:user) { create(:user) }
+    let(:question) { create(:question, author: user) }
     let(:post_create) { post :create, params: { answer: answer_params, question_id: question.id } }
 
     context 'when authenticated user' do
@@ -57,7 +56,8 @@ RSpec.describe AnswersController, type: :controller do
     let(:delete_destroy) { delete :destroy, params: { id: answer } }
 
     context 'when authenticated user' do
-      let!(:answer) { create(:answer, question: question, author: user) }
+      let(:user) { create(:user) }
+      let!(:answer) { create(:answer, author: user) }
 
       before { login(user) }
 
@@ -72,10 +72,10 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     context 'when unauthenticated user' do
-      let!(:answer) { create(:answer, question: question, author: user) }
+      let!(:answer) { create(:answer) }
 
       it 'not deletes the answer' do
-        expect { delete_destroy }.to change(Answer, :count).by(0)
+        expect { delete_destroy }.not_to change(Answer, :count)
       end
 
       it 'redirects to sign in' do
