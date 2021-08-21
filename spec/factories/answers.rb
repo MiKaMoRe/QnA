@@ -1,7 +1,11 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :answer do
-    title { "MyString" }
-    body { "MyText" }
+    title { 'MyAnswer' }
+    body { 'Aswers body' }
+    association :author, factory: :user
+    question
 
     trait :invalid do
       title { nil }

@@ -1,6 +1,9 @@
-RSpec.describe Answer, type: :model do
-  it { should belong_to :question }
+# frozen_string_literal: true
 
-  it { should validate_presence_of :title }
-  it { should validate_presence_of :body }
+RSpec.describe Answer, type: :model do
+  it { is_expected.to belong_to :question }
+  it { is_expected.to belong_to :author }
+
+  it { is_expected.to validate_presence_of :title }
+  it { is_expected.to validate_presence_of :body }
 end
