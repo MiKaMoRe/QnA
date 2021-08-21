@@ -21,6 +21,7 @@ RSpec.describe AnswersController, type: :controller do
         it 'redirect to show view' do
           post_create
           expect(response).to redirect_to assigns(:question)
+          expect(response).to have_http_status(302)
         end
       end
 
@@ -48,6 +49,7 @@ RSpec.describe AnswersController, type: :controller do
       it 'redirect to sign in' do
         post_create
         expect(response).to redirect_to new_user_session_path
+        expect(response).to have_http_status(302)
       end
     end
   end
@@ -78,9 +80,10 @@ RSpec.describe AnswersController, type: :controller do
         expect { delete_destroy }.not_to change(Answer, :count)
       end
 
-      it 'redirects to sign in' do
+      it 'redirect to sign in' do
         delete_destroy
         expect(response).to redirect_to new_user_session_path
+        expect(response).to have_http_status(302)
       end
     end
   end
