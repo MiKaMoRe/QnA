@@ -5,7 +5,7 @@ FactoryBot.define do
     title { 'MyAnswer' }
     body { 'Aswers body' }
     association :author, factory: :user
-    association :question, factory: :question
+    question
 
     trait :invalid do
       title { nil }
