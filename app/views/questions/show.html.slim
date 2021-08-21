@@ -1,11 +1,11 @@
-=render 'shared/errors', resource: @question
-=render 'shared/errors', resource: @answer
+= render 'shared/errors', resource: @question
+= render 'shared/errors', resource: @answer
 
 h1= @question.title
 p= @question.body
 div 
   h3 Answers 
-  =render @question.answers
+  = render @question.answers
   = form_with model: [@question, @answer] do |f|
     = f.label :title
     = f.text_field :title
