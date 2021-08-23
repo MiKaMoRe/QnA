@@ -8,6 +8,7 @@ import Turbolinks from "turbolinks"
 import $ from 'jquery'
 import * as ActiveStorage from "@rails/activestorage"
 import "channels"
+import './utilities/turbolinks_load.js'
 
 global.$ = $
 global.jQuery = $

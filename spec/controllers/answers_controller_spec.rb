@@ -87,4 +87,58 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+  describe 'PATCH #update' do
+    let(:patch_update) { patch :update, params: { id: answer, answer: answer_params}, format: :js  }
+
+    context 'when authenticated user' do
+      let(:user) { create(:user) }
+      let!(:answer) { create(:answer, author: user) }
+
+      before { login(user) }
+
+      context 'with valid attributes' do
+        let(:answer_params) { attributes_for(:answer, body: 'new body') }
+
+        it 'changes answer attributes' do
+          patch_update
+          answer.reload
+          expect(answer.body).to eq 'new body'
+        end
+
+        it 'renders update view' do
+          patch_update
+          expect(response).to render_template :update
+        end
+      end
+
+      context 'with invalid attributes' do
+        let(:answer_params) { attributes_for(:answer, :invalid) }
+
+        it 'does not change answer attributes' do
+          expect { patch_update }.not_to change(answer, :body)
+        end
+
+        it 'renders update view' do
+          patch_update
+          expect(response).to render_template :update
+        end
+      end
+    end
+
+    context 'when unauthenticated user' do
+      let!(:answer) { create(:answer) }
+      let(:answer_params) { attributes_for(:answer, body: 'new body') }
+
+      it 'does not see answer attributes' do
+        expect { patch_update }.not_to change(answer, :body)
+      end
+
+      it 'redirect to sign in' do
+        patch_update
+        expect(response).to redirect_to "#{new_user_session_path}.js"
+        expect(response).to have_http_status(302)
+      end
+    end
+  end
 end
