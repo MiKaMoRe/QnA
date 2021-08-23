@@ -15,9 +15,9 @@ class AnswersController < ApplicationController
 
     if current_user.author_of?(@answer)
       @answer.destroy
-      redirect_to question_path(@answer.question), notice: 'Answer successfully deleted'
+      flash[:notice] = 'Answer successfully deleted'
     else
-      redirect_to question_path(@answer.question), alert: 'You are not a author!'
+      flash[:alert] = 'You are not a author!'
     end
   end
 

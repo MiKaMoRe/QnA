@@ -3,6 +3,6 @@ $('.notice').html('<%= notice %>')
 $('.alert').html('<%= alert %>')
 <% if @answer.persisted? %>
   $('.answers').append('<%= j render @answer %>')
-  $('#answer_body').val('')
-  $('#answer_title').val('')
+  $('form').last().find('#answer_title').val('')
+  $('form').last().find('#answer_body').val('')
 <% end %>

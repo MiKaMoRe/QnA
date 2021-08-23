@@ -55,7 +55,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    let(:delete_destroy) { delete :destroy, params: { id: answer } }
+    let(:delete_destroy) { delete :destroy, params: { id: answer }, format: :js }
 
     context 'when authenticated user' do
       let(:user) { create(:user) }
@@ -69,7 +69,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'redirects to index' do
         delete_destroy
-        expect(response).to redirect_to question_path(answer.question)
+        expect(response).to render_template :destroy
       end
     end
 
@@ -82,14 +82,14 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'redirect to sign in' do
         delete_destroy
-        expect(response).to redirect_to new_user_session_path
+        expect(response).to redirect_to "#{new_user_session_path}.js"
         expect(response).to have_http_status(302)
       end
     end
   end
 
   describe 'PATCH #update' do
-    let(:patch_update) { patch :update, params: { id: answer, answer: answer_params}, format: :js  }
+    let(:patch_update) { patch :update, params: { id: answer, answer: answer_params}, format: :js }
 
     context 'when authenticated user' do
       let(:user) { create(:user) }
