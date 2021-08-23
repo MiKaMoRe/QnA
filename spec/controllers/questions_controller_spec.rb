@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe QuestionsController, type: :controller do
   describe 'POST #create' do
     let(:user) { create(:user) }
-    let(:post_create) { post :create, params: { question: question_params } }
+    let(:post_create) { post :create, params: { question: question_params }, format: :js }
 
     context 'when authenticated user' do
       before { login(user) }
@@ -33,7 +33,7 @@ RSpec.describe QuestionsController, type: :controller do
 
         it 're-render new view' do
           post_create
-          expect(response).to render_template :new
+          expect(response).to render_template :create
         end
       end
     end
@@ -47,7 +47,7 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'redirect to sign in' do
         post_create
-        expect(response).to redirect_to new_user_session_path
+        expect(response).to redirect_to "#{new_user_session_path}.js"
         expect(response).to have_http_status(302)
       end
     end
