@@ -54,7 +54,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    let(:delete_destroy) { delete :destroy, params: { id: question } }
+    let(:delete_destroy) { delete :destroy, params: { id: question }, format: :js }
 
     context 'when authenticated user' do
       let(:user) { create(:user) }
@@ -66,9 +66,9 @@ RSpec.describe QuestionsController, type: :controller do
         expect { delete_destroy }.to change(Question, :count).by(-1)
       end
 
-      it 'redirects to index' do
+      it 'render destroy template' do
         delete_destroy
-        expect(response).to redirect_to root_path
+        expect(response).to render_template :destroy
       end
     end
 
@@ -80,9 +80,10 @@ RSpec.describe QuestionsController, type: :controller do
         expect { delete_destroy }.not_to change(Question, :count)
       end
 
-      it 'redirects to index' do
+      it 'redirect to sign in' do
         delete_destroy
-        expect(response).to redirect_to new_user_session_path
+        expect(response).to redirect_to "#{new_user_session_path}.js"
+        expect(response).to have_http_status(302)
       end
     end
   end

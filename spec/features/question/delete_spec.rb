@@ -14,7 +14,7 @@ feature 'User can remove the question', "
     visit root_path
   end
 
-  scenario 'author tries to delete question' do
+  scenario 'author tries to delete question', js: true do
     sign_in(user)
 
     expect(page).to have_content 'MyQuestion'
