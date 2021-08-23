@@ -10,7 +10,8 @@ feature 'User can open the question', "
   let!(:answer) { create(:answer) }
 
   scenario 'user open questions list' do
-    visit question_path(answer.question)
+    visit root_path
+    click_on 'Open answers'
 
     expect(page).to have_content answer.title
     expect(page).to have_content answer.body

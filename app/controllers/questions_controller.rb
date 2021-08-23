@@ -4,6 +4,7 @@ class QuestionsController < ApplicationController
 
   def index
     @questions = Question.all
+    @question = Question.new
   end
 
   def new
@@ -31,6 +32,11 @@ class QuestionsController < ApplicationController
     else
       redirect_to root_path, alert: 'You are not a author!'
     end
+  end
+
+  def update
+    @question = Question.find(params[:id])
+    @question.update(question_params)
   end
 
   private
