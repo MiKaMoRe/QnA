@@ -5,11 +5,8 @@ class AnswersController < ApplicationController
     @question = Question.find(params[:question_id])
     @answer = @question.answers.build(answer_params)
     @answer.author = current_user
-
     if @answer.save
-      redirect_to @question, notice: 'Your answer successfully posted.'
-    else
-      render 'questions/show'
+      flash[:notice] = 'Your answer successfully posted.'
     end
   end
 

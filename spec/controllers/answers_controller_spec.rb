@@ -6,7 +6,7 @@ RSpec.describe AnswersController, type: :controller do
   describe 'POST #create' do
     let(:user) { create(:user) }
     let(:question) { create(:question, author: user) }
-    let(:post_create) { post :create, params: { answer: answer_params, question_id: question.id } }
+    let(:post_create) { post :create, params: { answer: answer_params, question_id: question.id }, format: :js }
 
     context 'when authenticated user' do
       before { login(user) }
@@ -18,10 +18,10 @@ RSpec.describe AnswersController, type: :controller do
           expect { post_create }.to change(Answer, :count).by(1)
         end
 
-        it 'redirect to show view' do
+        it 'render create view' do
           post_create
-          expect(response).to redirect_to assigns(:question)
-          expect(response).to have_http_status(302)
+          expect(response).to render_template :create
+          expect(response).to have_http_status(200)
         end
       end
 
@@ -32,9 +32,9 @@ RSpec.describe AnswersController, type: :controller do
           expect { post_create }.not_to change(Answer, :count)
         end
 
-        it 're-render new view' do
+        it 'render create view' do
           post_create
-          expect(response).to render_template 'questions/show'
+          expect(response).to render_template :create
         end
       end
     end
@@ -48,7 +48,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'redirect to sign in' do
         post_create
-        expect(response).to redirect_to new_user_session_path
+        expect(response).to redirect_to "#{new_user_session_path}.js"
         expect(response).to have_http_status(302)
       end
     end
