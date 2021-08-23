@@ -87,4 +87,58 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
+
+  describe 'PATCH #update' do
+    let(:patch_update) { patch :update, params: { id: question, question: question_params}, format: :js }
+
+    context 'when authenticated user' do
+      let(:user) { create(:user) }
+      let!(:question) { create(:question, author: user) }
+
+      before { login(user) }
+
+      context 'with valid attributes' do
+        let(:question_params) { attributes_for(:question, body: 'new body') }
+
+        it 'changes question attributes' do
+          patch_update
+          question.reload
+          expect(question.body).to eq 'new body'
+        end
+
+        it 'renders update view' do
+          patch_update
+          expect(response).to render_template :update
+        end
+      end
+
+      context 'with invalid attributes' do
+        let(:question_params) { attributes_for(:question, :invalid) }
+
+        it 'does not change question attributes' do
+          expect { patch_update }.not_to change(question, :body)
+        end
+
+        it 'renders update view' do
+          patch_update
+          expect(response).to render_template :update
+        end
+      end
+    end
+
+    context 'when unauthenticated user' do
+      let!(:question) { create(:question) }
+      let(:question_params) { attributes_for(:question, body: 'new body') }
+
+      it 'does not see question attributes' do
+        expect { patch_update }.not_to change(question, :body)
+      end
+
+      it 'redirect to sign in' do
+        patch_update
+        expect(response).to redirect_to "#{new_user_session_path}.js"
+        expect(response).to have_http_status(302)
+      end
+    end
+  end
 end

@@ -67,7 +67,7 @@ RSpec.describe AnswersController, type: :controller do
         expect { delete_destroy }.to change(Answer, :count).by(-1)
       end
 
-      it 'redirects to index' do
+      it 'render destroy template' do
         delete_destroy
         expect(response).to render_template :destroy
       end
