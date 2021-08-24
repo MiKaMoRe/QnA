@@ -26,6 +26,13 @@ class AnswersController < ApplicationController
     @answer.update(answer_params)
   end
 
+  def nominate
+    @answer = Answer.find(params[:id])
+    @question = @answer.question
+    @answer.nominate
+    @answer.save
+  end
+
   private
   
   def answer_params

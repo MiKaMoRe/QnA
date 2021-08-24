@@ -1,6 +1,7 @@
 class Answer{
   constructor(){
     this.formEdit()
+    this.bestAnswer()
   }
 
   formEdit() {
@@ -11,6 +12,10 @@ class Answer{
       $(e.target).hide();
       $('form#edit-answer-' + answerId).removeClass('hidden')
     })
+  }
+
+  bestAnswer() {
+    $('.answer').first().before($(".best-answer"))
   }
 }
 

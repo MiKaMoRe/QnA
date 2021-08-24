@@ -2,6 +2,7 @@
 
 RSpec.describe Question, type: :model do
   it { is_expected.to belong_to :author }
+  it { is_expected.to belong_to(:best_answer).optional }
 
   it { is_expected.to have_many(:answers).dependent(:destroy) }
 
