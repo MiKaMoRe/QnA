@@ -20,7 +20,7 @@ RSpec.describe QuestionsController, type: :controller do
         it 'redirect to show view' do
           post_create
           expect(response).to redirect_to assigns(:question)
-          expect(response).to have_http_status(302)
+          expect(response).to have_http_status(:found)
         end
       end
 
@@ -48,7 +48,7 @@ RSpec.describe QuestionsController, type: :controller do
       it 'redirect to sign in' do
         post_create
         expect(response).to redirect_to "#{new_user_session_path}.js"
-        expect(response).to have_http_status(302)
+        expect(response).to have_http_status(:found)
       end
     end
   end
@@ -83,13 +83,13 @@ RSpec.describe QuestionsController, type: :controller do
       it 'redirect to sign in' do
         delete_destroy
         expect(response).to redirect_to "#{new_user_session_path}.js"
-        expect(response).to have_http_status(302)
+        expect(response).to have_http_status(:found)
       end
     end
   end
 
   describe 'PATCH #update' do
-    let(:patch_update) { patch :update, params: { id: question, question: question_params}, format: :js }
+    let(:patch_update) { patch :update, params: { id: question, question: question_params }, format: :js }
 
     context 'when authenticated user' do
       let(:user) { create(:user) }
@@ -137,7 +137,7 @@ RSpec.describe QuestionsController, type: :controller do
       it 'redirect to sign in' do
         patch_update
         expect(response).to redirect_to "#{new_user_session_path}.js"
-        expect(response).to have_http_status(302)
+        expect(response).to have_http_status(:found)
       end
     end
   end
