@@ -10,13 +10,13 @@ feature 'User can open the question', "
   describe 'when authenticated user' do
     given(:user) { create(:user) }
     given(:question) { create(:question, author: user) }
-    given!(:answer) { create(:answer, question: question) }
 
     background do
       sign_in(user)
     end
 
     scenario 'choose the best answer of his question', js: true do
+      create(:answer, question: question)
       visit question_path(question)
       click_on 'Choose as best'
 
@@ -25,6 +25,7 @@ feature 'User can open the question', "
     end
 
     scenario 'choose other answer of his question', js: true do
+      create(:answer, question: question, best: true)
       create(:answer, question: question, body: 'second answer')
       visit question_path(question)
 
@@ -32,8 +33,12 @@ feature 'User can open the question', "
         click_on 'Choose as best'
       end
       
-      within '.best-answer' do
-        expect(page).to have_content 'second answer'
+      within '.answer:nth-child(1)' do
+        expect(page).to have_content 'Best answer'
+      end
+
+      within '.answer:nth-child(2)' do
+        expect(page).not_to have_content 'Best answer'
       end
     end
 
