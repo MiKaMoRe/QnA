@@ -1,10 +1,10 @@
 - if answer.persisted?
   div.answer id="answer-#{answer.id}" class==(answer.best? ? 'best-answer' : '')
-    - if answer.best?
+    - if answer.best
       p= 'Best answer'
     p= answer.title
     p= answer.body
-    - unless answer.best?
+    - unless answer.best
       = link_to 'Choose as best', nominate_answer_path(answer), remote: true, method: :patch, class: 'best-answer-link'
     - if user_signed_in? && current_user.author_of?(answer)
       = link_to 'Delete', answer_path(answer), remote: true, method: :delete

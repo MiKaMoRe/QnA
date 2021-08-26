@@ -29,7 +29,13 @@ class AnswersController < ApplicationController
   def nominate
     @answer = Answer.find(params[:id])
     @question = @answer.question
-    @answer.nominate
+    best_answer = @question.best_answer
+
+    if best_answer
+      best_answer.best != false
+    end
+
+    @answer.best = true
     @answer.save
   end
 
