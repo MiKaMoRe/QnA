@@ -14,7 +14,7 @@ feature 'User can remove the question', "
     visit root_path
   end
 
-  scenario 'author tries to delete question' do
+  scenario 'author tries to delete question', js: true do
     sign_in(user)
 
     expect(page).to have_content 'MyQuestion'
@@ -22,23 +22,19 @@ feature 'User can remove the question', "
 
     click_on 'Delete'
 
-    expect(page).to_not have_content 'MyQuestion'
-    expect(page).to_not have_content 'Questions body'
+    expect(page).not_to have_content 'MyQuestion'
+    expect(page).not_to have_content 'Questions body'
     expect(page).to have_content 'Question successfully deleted'
   end
 
   scenario 'not a author tries to delete question' do
     sign_in(create(:user))
     visit root_path
-    click_on 'Delete'
 
-    expect(page).to have_content 'You are not a author!'
+    expect(page).not_to have_content 'Delete'
   end
 
   scenario 'unauthenticated user tries to delete question' do
-    click_on 'Delete'
-
-    expect(page).to have_content 'Log in'
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    expect(page).not_to have_content 'Delete'
   end
 end

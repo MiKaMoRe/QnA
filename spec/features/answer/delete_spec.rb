@@ -15,7 +15,7 @@ feature 'User can remove the answer', "
     visit question_path(question)
   end
 
-  scenario 'author tries to delete answer' do
+  scenario 'author tries to delete answer', js: true do
     sign_in(user)
     visit question_path(question)
 
@@ -24,8 +24,8 @@ feature 'User can remove the answer', "
 
     click_on 'Delete'
 
-    expect(page).to_not have_content 'MyAnswer'
-    expect(page).to_not have_content 'Aswers body'
+    expect(page).not_to have_content 'MyAnswer'
+    expect(page).not_to have_content 'Aswers body'
     expect(page).to have_content 'Answer successfully deleted'
   end
 

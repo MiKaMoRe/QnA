@@ -1,30 +1,39 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
+  before_action :find_answer, only: [:destroy, :update, :nominate]
 
   def create
     @question = Question.find(params[:question_id])
     @answer = @question.answers.build(answer_params)
     @answer.author = current_user
-
     if @answer.save
-      redirect_to @question, notice: 'Your answer successfully posted.'
-    else
-      render 'questions/show'
+      flash[:notice] = 'Your answer successfully posted.'
     end
   end
 
   def destroy
-    @answer = Answer.find(params[:id])
-
     if current_user.author_of?(@answer)
       @answer.destroy
-      redirect_to question_path(@answer.question), notice: 'Answer successfully deleted'
+      flash[:notice] = 'Answer successfully deleted'
     else
-      redirect_to question_path(@answer.question), alert: 'You are not a author!'
+      flash[:alert] = 'You are not a author!'
     end
   end
 
+  def update
+    @answer.update(answer_params)
+  end
+
+  def nominate
+    @question = @answer.question
+    @answer.choose_as_best
+  end
+
   private
+
+  def find_answer
+    @answer = Answer.find(params[:id])
+  end
   
   def answer_params
     params.require(:answer).permit(:title, :body)

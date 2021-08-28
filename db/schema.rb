@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 2021_08_09_003309) do
   create_table "answers", force: :cascade do |t|
     t.string "title", null: false
     t.text "body", null: false
+    t.boolean "best", default: false, null: false
     t.bigint "question_id", null: false
     t.bigint "author_id", null: false
     t.datetime "created_at", precision: 6, null: false
