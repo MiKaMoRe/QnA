@@ -141,4 +141,45 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+  describe 'PATCH #nominate' do
+    let(:patch_nominate) { patch :nominate, params: { id: answer }, format: :js }
+
+    context 'when authenticated user' do
+      let(:user) { create(:user) }
+      let(:question) { create(:question, author: user) }
+      let!(:answer) { create(:answer, question: question) }
+      let!(:best_answer) { create(:answer, question: question, best: true) }
+
+      before { login(user) }
+
+      it 'change best answer' do
+        patch_nominate
+        expect { answer.reload }.to change(answer, :best)
+      end
+
+      it 'renders nominate view' do
+        patch_nominate
+        expect(response).to render_template :nominate
+      end
+    end
+
+    context 'when unauthenticated user' do
+      let(:user) { create(:user) }
+      let(:question) { create(:question, author: user) }
+      let!(:answer) { create(:answer, question: question) }
+      let!(:best_answer) { create(:answer, question: question, best: true) }
+
+      it 'does not see answer attributes' do
+        patch_nominate
+        expect { answer.reload }.not_to change(answer, :best)
+      end
+
+      it 'redirect to sign in' do
+        patch_nominate
+        expect(response).to redirect_to "#{new_user_session_path}.js"
+        expect(response).to have_http_status(:found)
+      end
+    end
+  end
 end
