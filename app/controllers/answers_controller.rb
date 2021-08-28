@@ -26,15 +26,7 @@ class AnswersController < ApplicationController
 
   def nominate
     @question = @answer.question
-    best_answer = @question.best_answer
-
-    if best_answer
-      best_answer.best = false
-      best_answer.save
-    end
-
-    @answer.best = true
-    @answer.save
+    @question.new_best_answer(@answer)
   end
 
   private
