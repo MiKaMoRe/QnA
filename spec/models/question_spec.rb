@@ -23,15 +23,4 @@ RSpec.describe Question, type: :model do
       it { expect(question.best_answer).to be_nil }
     end
   end
-
-  describe '#new_best_answer' do
-    let(:question) { create(:question) }
-    let(:answer) { create(:answer, question: question) }
-    let!(:best_answer) { create(:answer, question: question, best: true) }
-
-    before { question.new_best_answer(answer)}
-
-    it { expect(answer.best).to be_truthy }
-    it { expect(best_answer.reload.best).to be_falsey }
-  end
 end

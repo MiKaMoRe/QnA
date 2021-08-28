@@ -26,7 +26,7 @@ class AnswersController < ApplicationController
 
   def nominate
     @question = @answer.question
-    @question.new_best_answer(@answer)
+    @answer.choose_as_best
   end
 
   private
