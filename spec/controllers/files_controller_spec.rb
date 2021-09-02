@@ -6,7 +6,7 @@ RSpec.describe FilesController, type: :controller do
   describe 'DELETE #answer_destroy' do
     let(:user) { create(:user) }
     let!(:answer) { create(:answer, :with_files, author: user) }
-    let(:delete_answer_destroy) { delete :answer_destroy, params: { answer_id: answer.id, file_id: answer.files.attachments[0].id }, format: :js }
+    let(:delete_answer_destroy) { delete :answer_destroy, params: { file_id: answer.files.attachments[0].id }, format: :js }
 
     context 'when authenticated user' do
       before { login(user) }
@@ -38,7 +38,7 @@ RSpec.describe FilesController, type: :controller do
   describe 'DELETE #question_destroy' do
     let(:user) { create(:user) }
     let!(:question) { create(:question, :with_files, author: user) }
-    let(:delete_question_destroy) { delete :question_destroy, params: { question_id: question.id, file_id: question.files.attachments[0].id }, format: :js }
+    let(:delete_question_destroy) { delete :question_destroy, params: { file_id: question.files.attachments[0].id }, format: :js }
 
     context 'when authenticated user' do
       before { login(user) }

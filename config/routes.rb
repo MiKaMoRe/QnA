@@ -11,12 +11,12 @@ Rails.application.routes.draw do
         patch :nominate
       end
       
-      resources :files, shallow: false, only: %i[] do
+      resources :files, shallow: true, only: %i[] do
         delete :answer_destroy
       end
     end
 
-    resources :files, only: %i[] do
+    resources :files, shallow: true, only: %i[] do
       delete :question_destroy
     end
   end

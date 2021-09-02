@@ -3,17 +3,18 @@ class FilesController < ApplicationController
   before_action :purge_file, only: [:question_destroy, :answer_destroy]
 
   def question_destroy
-    @question = Question.find(params[:question_id])
+    @question = @file.record
   end
 
   def answer_destroy
-    @answer = Answer.find(params[:answer_id])
+    @answer = @file.record
   end
 
   private
 
   def purge_file
     @file = ActiveStorage::Attachment.find(params[:file_id])
+
     if current_user.author_of?(@file.record)
       @file.purge
       flash[:notice] = 'File successfully deleted'

@@ -8,7 +8,7 @@
       - answer.files.each do |file|
         p= link_to file.filename.to_s, url_for(file)
         - if user_signed_in? && current_user.author_of?(answer)
-          p= link_to 'Remove', answer_file_answer_destroy_path(answer.id, file.id), remote: true, method: :delete
+          p= link_to 'Remove', file_answer_destroy_path(file.id), remote: true, method: :delete
     - unless answer.best
       - if user_signed_in? && current_user.author_of?(answer.question)
         = link_to 'Choose as best', nominate_answer_path(answer), remote: true, method: :patch, class: 'best-answer-link'
