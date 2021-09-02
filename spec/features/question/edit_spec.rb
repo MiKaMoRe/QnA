@@ -33,6 +33,39 @@ feature 'User can change the question', "
       end
     end
 
+    scenario 'edits his question with attached file', js: true do
+      sign_in(user)
+      visit root_path
+
+      click_on 'Edit'
+
+      within '.questions' do
+        attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+        click_on 'Save'
+
+        expect(page).to have_link 'rails_helper.rb'
+        expect(page).to have_link 'spec_helper.rb'
+      end
+    end
+
+    scenario 'remove attached file', js: true do
+      sign_in(user)
+      visit root_path
+
+      click_on 'Edit'
+
+      within '.questions' do
+        attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb"]
+        click_on 'Save'
+
+        expect(page).to have_link 'rails_helper.rb'
+
+        click_on 'Remove'
+
+        expect(page).not_to have_link 'rails_helper.rb'
+      end
+    end
+
     scenario 'edits his question with errors', js: true do
       sign_in(user)
       visit root_path
