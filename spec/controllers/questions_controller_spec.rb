@@ -3,6 +3,26 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
+  describe 'GET #new' do
+    let(:user) { create(:user) }
+
+    before { login(user) }
+
+    before { get :new }
+
+    it 'assigns a new Question to @question' do
+      expect(assigns(:question)).to be_a_new(Question)
+    end
+
+    it 'assigns a new Question to @question' do
+      expect(assigns(:question).links.first).to be_a_new(Link)
+    end
+
+    it 'renders new view' do
+      expect(response).to render_template :new
+    end
+  end
+
   describe 'POST #create' do
     let(:user) { create(:user) }
     let(:post_create) { post :create, params: { question: question_params }, format: :js }
