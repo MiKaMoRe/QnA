@@ -5,8 +5,10 @@ p= @question.body
   - @question.files.each do |file|
     p= link_to file.filename.to_s, url_for(file)
 
-.links
-  = render @question.links
+p Links:
+ul
+  .links
+    = render @question.links
 
 div
   h3 Answers
@@ -23,12 +25,8 @@ div
     = f.file_field :files, multiple: true
     p Links:
     p
-      = f.fields_for :links do |l|
-        p
-          = l.label :name, 'Link name'
-          = l.text_field :name
-        p
-          = l.label :url
-          = l.text_field :url
-            
+      = f.fields_for :links do |link|
+        = render 'link_fields', f: link
+      .links
+        = link_to_add_association 'add task', f, :links
     = f.submit 'Answer'

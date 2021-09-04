@@ -1,14 +1,13 @@
 - gist_service = GistService.new
 
-p Links:
-ul
-  - if gist_service.gist?(link.url)
-    li
-      h3 Gist
+- if gist_service.gist?(link.url)
+  li
+    b Gist:
+    ul
       - gist = gist_service.gist(link.url)
-      p= gist.description
+      li= gist.description
       - gist.files.map do |file_name, file_body|
-        p = file_name 
-        p = file_body.content
-  - else
-    li= link_to link.name, link.url
+        li = file_name 
+        li = file_body.content
+- else
+  li= link_to link.name, link.url

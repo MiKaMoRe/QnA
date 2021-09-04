@@ -4,8 +4,10 @@
       p= 'Best answer'
     p= answer.title
     p= answer.body
-    .links
-      = render answer.links
+    p Links:
+    ul
+      .links
+        = render answer.links
     - if answer.files.attached?
       - answer.files.each do |file|
         p= link_to file.filename.to_s, url_for(file)
