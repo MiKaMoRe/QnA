@@ -20,4 +20,6 @@ Rails.application.routes.draw do
       delete :question_destroy
     end
   end
+
+  resources :links, only: %i[destroy]
 end
