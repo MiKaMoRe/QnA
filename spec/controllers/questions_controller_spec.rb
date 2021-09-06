@@ -14,8 +14,12 @@ RSpec.describe QuestionsController, type: :controller do
       expect(assigns(:question)).to be_a_new(Question)
     end
 
-    it 'assigns a new Question to @question' do
+    it 'assigns a new link for question' do
       expect(assigns(:question).links.first).to be_a_new(Link)
+    end
+
+    it 'assigns a new reward for question' do
+      expect(assigns(:question).reward).to be_a_new(Reward)
     end
 
     it 'renders new view' do
@@ -23,7 +27,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'GET #new' do
+  describe 'GET #show' do
     let(:user) { create(:user) }
     let(:question) { create(:question) }
 

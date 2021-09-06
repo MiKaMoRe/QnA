@@ -21,5 +21,6 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :rewards, only: %i[index]
   resources :links, only: %i[destroy]
 end

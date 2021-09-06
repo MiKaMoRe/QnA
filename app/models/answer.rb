@@ -13,7 +13,11 @@ class Answer < ApplicationRecord
   def choose_as_best
     transaction do
       best_answer = question.best_answer
+      reward = question.reward
+
+      reward.give_to author if reward
       best_answer.update!(best: false) if best_answer
+      
       update!(best: true)
     end
   end
