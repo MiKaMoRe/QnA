@@ -17,7 +17,7 @@ feature 'User can create question', "
       click_on 'Ask question'
     end
 
-    scenario 'asks a question', js: true do
+    scenario 'asks a question' do
       fill_in 'Title', with: 'Test question'
       fill_in 'Body', with: 'test test test'
       click_on 'Ask'
@@ -27,7 +27,7 @@ feature 'User can create question', "
       expect(page).to have_content 'test test test'
     end
 
-    scenario 'asks a question with attached file', js: true do
+    scenario 'asks a question with attached file' do
       fill_in 'Title', with: 'Test question'
       fill_in 'Body', with: 'test test test'
 
@@ -38,7 +38,7 @@ feature 'User can create question', "
       expect(page).to have_link 'spec_helper.rb'
     end
 
-    scenario 'asks a question with errors', js: true do
+    scenario 'asks a question with errors' do
       click_on 'Ask'
       expect(page).to have_content "Title can't be blank"
     end

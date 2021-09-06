@@ -7,6 +7,10 @@ FactoryBot.define do
     title { 'MyQuestion' }
     body { 'Questions body' }
     association :author, factory: :user
+    
+    trait :with_reward do
+      reward
+    end
 
     trait :with_files do
       files { [Rack::Test::UploadedFile.new("#{Rails.root}/spec/rails_helper.rb"), Rack::Test::UploadedFile.new("#{Rails.root}/spec/spec_helper.rb")] }

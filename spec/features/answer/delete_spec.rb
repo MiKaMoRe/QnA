@@ -15,7 +15,7 @@ feature 'User can remove the answer', "
     visit question_path(question)
   end
 
-  scenario 'author tries to delete answer', js: true do
+  scenario 'author tries to delete answer', :js do
     sign_in(user)
     visit question_path(question)
 

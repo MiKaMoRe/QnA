@@ -18,7 +18,7 @@ feature 'User can change the answer', "
   end
 
   describe 'Authenticated user' do
-    scenario 'edits his answer', js: true do
+    scenario 'edits his answer', :js do
       sign_in(user)
       visit question_path(question)
 
@@ -34,7 +34,7 @@ feature 'User can change the answer', "
       end
     end
 
-    scenario 'edits his answer with attached file', js: true do
+    scenario 'edits his answer with attached file', :js do
       sign_in(user)
       visit question_path(question)
 
@@ -49,7 +49,7 @@ feature 'User can change the answer', "
       end
     end
 
-    scenario 'edits his answer with errors', js: true do
+    scenario 'edits his answer with errors', :js do
       sign_in(user)
       visit question_path(question)
 

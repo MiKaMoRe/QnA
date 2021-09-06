@@ -44,7 +44,7 @@ feature 'User can answer the question', "
     end
   end
 
-  scenario 'unautheticated user tries to answer the question', js: true do
+  scenario 'unautheticated user tries to answer the question', :js do
     visit question_path(question)
     fill_in 'Title', with: 'Test answer'
     fill_in 'Body', with: 'test test test'
