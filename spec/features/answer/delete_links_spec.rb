@@ -11,7 +11,7 @@ feature 'Authenticated user can delete answers links', "
   given(:answer) { create(:answer, author: user, question: question) }
   given!(:link) { create(:link, linkable: answer) }
 
-  scenario 'Authenticated user remove answers link', js: true do
+  scenario 'Authenticated user remove answers link', :js do
     sign_in(user)
     visit question_path(question)
 
@@ -26,7 +26,7 @@ feature 'Authenticated user can delete answers links', "
     end
   end
 
-  scenario 'Unauthenticated user remove answers link', js: true do
+  scenario 'Unauthenticated user remove answers link' do
     visit question_path(question)
 
     within '.answer' do
@@ -34,7 +34,7 @@ feature 'Authenticated user can delete answers links', "
     end
   end
 
-  scenario 'Not a author remove answers link', js: true do
+  scenario 'Not a author remove answers link' do
     sign_in(create(:user))
     visit question_path(question)
 

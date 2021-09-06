@@ -11,7 +11,7 @@ feature 'User can add links to answer', "
   given(:question) { create(:question) }
   given(:gist_url) { 'https://github.com/MiKaMoRe/QnA' }
 
-  scenario 'User adds link when answer', js: true do
+  scenario 'User adds link when answer', :js do
     sign_in(user)
 
     visit question_path(question)

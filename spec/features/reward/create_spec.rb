@@ -12,7 +12,7 @@ feature 'User can add reward to question', "
   given!(:reward) { create(:reward, question: question) }
   given!(:answer) { create(:answer, author: user, question: question) }
 
-  scenario 'author of question choose your answer', js: true do
+  scenario 'author of question choose your answer', :js do
     sign_in(user)
     visit rewards_path
 

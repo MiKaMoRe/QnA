@@ -47,7 +47,7 @@ class QuestionsController < ApplicationController
   private
 
   def question_params
-    params.require(:question).permit(:title, :body, files: [], reward_attributes: [:description, :image], links_attributes: [:name, :url])
+    params.require(:question).permit(:title, :body, files: [], reward_attributes: [:description, :image], links_attributes: [:name, :url, :_destroy])
   end
 
   def find_question

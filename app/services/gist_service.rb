@@ -1,5 +1,5 @@
 class GistService
-  GIST_URL_REGEXP = /^https:\/\/gist.github.com\/\w+\/\w{32}$/
+  GIST_URL_REGEXP = %r{^https:\/\/gist.github.com\/\w+\/\w{32}$}.freeze
 
   def initialize(client: nil)
     @client = client || Octokit::Client.new
@@ -11,6 +11,6 @@ class GistService
   end
 
   def gist?(url)
-    !!(url =~ GIST_URL_REGEXP)
+    GIST_URL_REGEXP.match?(url)
   end
 end
