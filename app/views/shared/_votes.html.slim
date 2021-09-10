@@ -1,0 +1,12 @@
+.votes
+  h3.vote-counter
+    = resource.total_votes
+  
+  - if user_signed_in? && !current_user.author_of?(resource)
+    - resource_name = resource.class.name.downcase
+
+    - if resource.vote_from current_user
+      = link_to 'Cancel my vote', send("cancel_vote_#{resource_name}_path", resource), class: 'voting cancelVote', data: { type: :json }, remote: true, method: :delete
+    - else
+      = link_to 'Like this', send("vote_#{resource_name}_path", resource, liked: true), class: 'voting upVote', data: { type: :json }, remote: true, method: :put
+      = link_to 'Dislike this', send("vote_#{resource_name}_path", resource, liked: false), class: 'voting downVote', data: { type: :json }, remote: true, method: :put
