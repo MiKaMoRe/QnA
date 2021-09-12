@@ -7,47 +7,44 @@ module Voted
 
   def vote
     if !@vote
-      @vote = Vote.new(vote_params)
-      @vote.update(voteable_id: @resource.id, author: current_user)
-      
-      respond_to do |format|
-        if current_user.author_of? @resource
-          format.json do
-            render json: @vote.errors.full_messages, status: :unprocessable_entity
-          end
-        elsif @vote.save
-          format.json { render json: @vote }
-        end
-      end
+      new_vote
     else
-      @vote.update(liked: vote_params[:liked])
-
-      respond_to do |format|
-        if @vote.save
-          format.json { render json: @vote }
-        else
-          format.json do
-            render json: @vote.errors.full_messages, status: :unprocessable_entity
-          end
-        end
-      end
+      update_vote
     end
   end
 
   def cancel_vote
-    respond_to do |format|
-      if !@vote.nil? && current_user.author_of?(@vote)
-        format.json { render json: @vote, vote_count: @resource.total_votes }
-        @vote.destroy
-      else
-        format.json do
-          render json: @vote.errors.full_messages, status: :unprocessable_entity
-        end
-      end
+    if @vote.present? && current_user.author_of?(@vote)
+      render json: @vote, vote_count: @resource.total_votes
+      @vote.destroy
+    else
+      render json: @vote.errors.full_messages, status: :unprocessable_entity
     end
   end
 
   private
+
+  def new_vote
+    @vote = Vote.new(vote_params)
+    @vote.assign_attributes(voteable_id: @resource.id, author: current_user)
+    
+    if current_user.author_of? @resource
+      render json: @vote.errors.full_messages, status: :unprocessable_entity
+    elsif @vote.save
+      render json: @vote
+    end
+  end
+
+  def update_vote
+    @vote.assign_attributes(liked: vote_params[:liked])
+
+
+    if @vote.save
+      render json: @vote
+    else
+      render json: @vote.errors.full_messages, status: :unprocessable_entity
+    end
+  end
 
   def find_resource
     @resource = vote_params[:voteable_type].constantize.find(vote_params[:id])
