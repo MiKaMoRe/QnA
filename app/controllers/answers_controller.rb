@@ -4,6 +4,8 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :find_answer, only: [:destroy, :update, :nominate]
 
+  after_action :publish_answer, only: [:create]
+
   def create
     @question = Question.find(params[:question_id])
     @answer = @question.answers.build(answer_params)
@@ -32,6 +34,36 @@ class AnswersController < ApplicationController
   end
 
   private
+
+  def publish_answer
+    return if @answer.errors.any?
+    
+    ActionCable.server.broadcast(
+      'answers', 
+      render_answer
+    )
+  end
+
+  def render_answer
+    AnswersController.renderer.instance_variable_set(
+      :@env, {
+        "HTTP_HOST"=>"localhost:3000", 
+        "HTTPS"=>"off", 
+        "REQUEST_METHOD"=>"GET", 
+        "SCRIPT_NAME"=>"",   
+        "warden" => warden
+      }
+    )
+  
+    AnswersController.render(
+      partial: 'answers/answer',
+      locals: { 
+        answer: @answer,
+        comment: @comment,
+        current_user: current_user
+      }
+    )
+  end
 
   def find_answer
     @answer = Answer.with_attached_files.find(params[:id])
