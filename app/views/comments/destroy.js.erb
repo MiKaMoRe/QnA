@@ -1,6 +1,0 @@
-$('.comment-errors').html('<%= render 'shared/errors', resource: @comment %>')
-$('.notice').html('<%= notice %>')
-$('.alert').html('<%= alert %>')
-<% unless @comment.errors.present? %>
-  $("#comment-<%= @comment.id %>").remove()
-<% end %>
