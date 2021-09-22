@@ -2,6 +2,6 @@ $('.comment-errors').html('<%= render 'shared/errors', resource: @comment %>')
 $('.notice').html('<%= notice %>')
 $('.alert').html('<%= alert %>')
 <% if @comment.persisted? %>
-  $('.comments').append('<%= j render @comment %>')
+  $('.<%= @comment.commentable.class.name.downcase %>-<%= @comment.commentable.id %>').find('.comments').append('<%= j render @comment %>')
   $('form').find('#comment_body').val('')
 <% end %>
