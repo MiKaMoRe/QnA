@@ -1,4 +1,5 @@
 import consumer from "./consumer"
+import Comment from '../packs/entities/Comment'
 
 consumer.subscriptions.create("CommentChannel", {
   connected() {
@@ -10,6 +11,8 @@ consumer.subscriptions.create("CommentChannel", {
   },
 
   received(data) {
-    $(`#${data.resource_name}-${data.resource_id}`).find('.comments').append(data.comment)
+    const comment = Comment.jsonRender(data)
+    data = JSON.parse(data)
+    $(`#${data.resource_name}-${data.resource_id}`).find('.comments').append(comment)
   }
 })

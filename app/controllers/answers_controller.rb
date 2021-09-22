@@ -40,28 +40,11 @@ class AnswersController < ApplicationController
     
     ActionCable.server.broadcast(
       'answers', 
-      render_answer
-    )
-  end
-
-  def render_answer
-    AnswersController.renderer.instance_variable_set(
-      :@env, {
-        "HTTP_HOST"=>"localhost:3000", 
-        "HTTPS"=>"off", 
-        "REQUEST_METHOD"=>"GET", 
-        "SCRIPT_NAME"=>"",   
-        "warden" => warden
-      }
-    )
-  
-    AnswersController.render(
-      partial: 'answers/answer',
-      locals: { 
+      {
         answer: @answer,
-        comment: @comment,
-        current_user: current_user
-      }
+        current_user: current_user,
+        create_comment_token: form_authenticity_token
+      }.to_json
     )
   end
 

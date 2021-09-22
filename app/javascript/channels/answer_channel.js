@@ -1,4 +1,5 @@
 import consumer from "./consumer"
+import Answer from '../packs/entities/Answer'
 
 consumer.subscriptions.create("AnswerChannel", {
   connected() {
@@ -10,6 +11,7 @@ consumer.subscriptions.create("AnswerChannel", {
   },
 
   received(data) {
-    $('.answers').append(data)
+    const answer = Answer.jsonRender(data)
+    $('.answers').append(answer)
   }
 })

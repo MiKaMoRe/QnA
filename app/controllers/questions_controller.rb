@@ -55,27 +55,11 @@ class QuestionsController < ApplicationController
     
     ActionCable.server.broadcast(
       'questions', 
-      render_question
-    )
-  end
-
-  def render_question
-    QuestionsController.renderer.instance_variable_set(
-      :@env, {
-        "HTTP_HOST"=>"localhost:3000", 
-        "HTTPS"=>"off", 
-        "REQUEST_METHOD"=>"GET", 
-        "SCRIPT_NAME"=>"",   
-        "warden" => warden
-      }
-    )
-  
-    QuestionsController.render(
-      partial: 'questions/question',
-      locals: { 
+      { 
         question: @question,
-        current_user: current_user
-      }
+        current_user: current_user,
+        create_comment_token: form_authenticity_token
+      }.to_json
     )
   end
 
