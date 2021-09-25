@@ -36,6 +36,7 @@ gem 'jquery-rails'
 gem "aws-sdk-s3", require: false
 gem 'cocoon'
 gem 'with_model'
+gem 'cancancan'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
