@@ -4,6 +4,8 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :find_question, only: [:show, :destroy]
 
+  after_action :publish_question, only: [:create]
+
   def index
     @questions = Question.all
     @question = Question.new
@@ -47,6 +49,19 @@ class QuestionsController < ApplicationController
   end
 
   private
+
+  def publish_question
+    return if @question.errors.any?
+    
+    ActionCable.server.broadcast(
+      'questions', 
+      { 
+        question: @question,
+        current_user: current_user,
+        create_comment_token: form_authenticity_token
+      }.to_json
+    )
+  end
 
   def question_params
     params.require(:question).permit(:title, :body, files: [], reward_attributes: [:description, :image], links_attributes: [:name, :url, :_destroy])
