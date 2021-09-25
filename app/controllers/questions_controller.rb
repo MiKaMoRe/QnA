@@ -6,6 +6,8 @@ class QuestionsController < ApplicationController
 
   after_action :publish_question, only: [:create]
 
+  authorize_resource
+
   def index
     @questions = Question.all
     @question = Question.new
@@ -35,7 +37,7 @@ class QuestionsController < ApplicationController
   def destroy
     @question = Question.find(params[:id])
 
-    if current_user.author_of?(@question)
+    if can?(:manage, @question)
       @question.destroy
       flash[:notice] = 'Question successfully deleted'
     else
