@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  use_doorkeeper
   devise_for :users, controllers: {
     sessions: 'users/sessions'
   }
@@ -38,4 +39,14 @@ Rails.application.routes.draw do
 
   resources :rewards, only: %i[index]
   resources :links, only: %i[destroy]
+
+  namespace :api do
+    namespace :v1 do
+      resources :profiles, only: %i[] do
+        get :me, on: :collection
+      end
+
+      resources :questions, only: %i[index create show destroy update]
+    end
+  end
 end
