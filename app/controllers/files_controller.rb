@@ -15,7 +15,7 @@ class FilesController < ApplicationController
   def purge_file
     @file = ActiveStorage::Attachment.find(params[:file_id])
 
-    if current_user.author_of?(@file.record)
+    if can?(:manage, @file.record)
       @file.purge
       flash[:notice] = 'File successfully deleted'
     else
