@@ -14,10 +14,10 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def create
-    @question = current_resource_owner.created_questions.build(question_params)
+    @question = current_user.created_questions.build(question_params)
     
     if @question.save
-      render json: { 'notice': 'Question successfuly created' }
+      render json: @question
     else
       render json: { 'alert': 'Question is not created' }
     end
@@ -26,9 +26,19 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   def destroy
     if can?(:manage, @question)
       @question.destroy
-      render json: { 'notice': 'Question successfuly destroyed' }
+      render json: @question
     else
       render json: { 'alert': 'Question destroy failed' }
+    end
+  end
+
+  def update
+    if can?(:manage, @question)
+      @question = Question.find(params[:id])
+      @question.update(question_params)
+      render json: @question
+    else
+      render json: { 'alert': 'Question update failed' }
     end
   end
 
