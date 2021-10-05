@@ -5,8 +5,6 @@ class QuestionSerializer < ActiveModel::Serializer
   has_many :links
 
   has_many :files, key: :files_url do
-    object.files.map do |file|
-      file.url
-    end
+    object.files.map(&:url)
   end
 end
