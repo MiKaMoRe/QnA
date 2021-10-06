@@ -58,4 +58,11 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  resources :question_subscriptions, only: %i[] do
+    collection do
+      post :subscribe
+      delete :unsubscribe
+    end
+  end
 end
