@@ -13,6 +13,7 @@ class AnswersController < ApplicationController
     @answer = @question.answers.build(answer_params)
     @answer.author = current_user
     if @answer.save
+      QuestionSubscriptionJob.perform_now(@question)
       flash[:notice] = 'Your answer successfully posted.'
     end
   end

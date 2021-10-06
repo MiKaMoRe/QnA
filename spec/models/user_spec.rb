@@ -6,6 +6,7 @@ RSpec.describe User, type: :model do
   it { is_expected.to have_many(:created_answers).dependent(:destroy) }
   it { is_expected.to have_many(:created_questions).dependent(:destroy) }
   it { is_expected.to have_many(:rewards).dependent(:destroy) }
+  it { is_expected.to have_many(:subscribed_questions).through(:question_subscription).source(:question).dependent(:destroy) }
 
   describe '#author_of?' do
     subject(:user) { create(:user) }
