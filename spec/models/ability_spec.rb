@@ -23,6 +23,8 @@ RSpec.describe Ability, type: :model do
     it { should be_able_to :create, Comment }
     it { should be_able_to :vote, Comment }
     it { should be_able_to :vote, Answer }
+    it { should be_able_to :subscribe, QuestionSubscription }
+    it { should be_able_to :unsubscribe, QuestionSubscription }
     it { should be_able_to :cancel_vote, create(:vote, author: user), author: user }
     it { should be_able_to :manage, create(:question, author: user), author: user }
     it { should be_able_to :manage, create(:answer, author: user), author: user }
